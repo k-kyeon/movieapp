@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #06001f;
+  --color-primary: #02020a;
   --color-light-100: #cedafe;
   --color-light-200: #92a5ca;
   --color-gray-100: #a3aaaf;
@@ -12,7 +12,7 @@
 
   --breakpoint-xs: 480px;
 
-  --background-image-hero: url("/bg-hero-2.png");
+  --background-image-hero: url("/bg-hero.jpg");
 }
 
 @layer base {
@@ -60,7 +60,7 @@
     }
 
     & input {
-      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-200 placeholder-light-200 outline-hidden;
+      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-200 placeholder-blue-200 outline-hidden;
     }
   }
 
@@ -86,13 +86,12 @@
     & ul li img {
       @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
     }
+  }
+  .all-movies {
+    @apply space-y-9;
 
-    .all-movies {
-      @apply space-y-9;
-
-      & ul {
-        @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
-      }
+    & ul {
+      @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
     }
   }
 
@@ -128,7 +127,7 @@
     }
 
     & .content .lang {
-      @apply capitalize text-gray-100 font-medium text-base;
+      @apply uppercase text-gray-100 font-medium text-base;
     }
 
     & .content .year {
