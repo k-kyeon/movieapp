@@ -5,6 +5,7 @@ import { FadeLoader } from "react-spinners";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
 import { getTrendingMovies, updateSearchCount } from "./appwrite";
+import Footer from "./components/Footer";
 
 const API_URL = "https://api.themoviedb.org/3";
 
@@ -127,6 +128,7 @@ const App = () => {
           )}
         </section>
       </div>
+      <Footer />
     </main>
   );
 };
