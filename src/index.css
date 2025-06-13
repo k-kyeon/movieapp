@@ -88,9 +88,10 @@
     }
 
     & ul li img {
-      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
+      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-4 shadow-md shadow-gray-400;
     }
   }
+
   .all-movies {
     @apply space-y-9;
 
@@ -140,7 +141,7 @@
   }
 
   .footer {
-    @apply flex flex-col justify-center items-center bg-black;
+    @apply flex flex-col justify-center items-center bg-black pb-8;
 
     & .divider {
       @apply w-11/12 border-t border-neutral-800 mb-9;
@@ -164,7 +165,7 @@
   }
 
   .footer-social {
-    @apply flex flex-col border border-neutral-600 bg-neutral-950 rounded-2xl max-w-5/12 px-10 py-7 justify-center items-center text-center mb-8;
+    @apply flex flex-col shadow-sm shadow-blue-400 border border-neutral-600 bg-neutral-950 rounded-2xl max-w-5/12 px-10 py-7 justify-center items-center text-center mb-8;
 
     & h2 {
       @apply text-3xl font-extralight mb-4;
@@ -178,23 +179,23 @@
       @apply flex flex-wrap justify-center gap-4;
 
       & .tt-container {
-        @apply bg-blue-100 rounded-3xl p-2;
+        @apply bg-blue-100 rounded-3xl p-2 cursor-pointer;
       }
 
       & .x-container {
-        @apply bg-white rounded-3xl p-2;
+        @apply bg-white rounded-3xl p-2 cursor-pointer;
       }
 
       & .yt-container {
-        @apply bg-red-100 rounded-3xl p-2;
+        @apply bg-red-100 rounded-3xl p-2 cursor-pointer;
       }
 
       & .fb-container {
-        @apply bg-cyan-100 rounded-3xl p-2;
+        @apply bg-cyan-100 rounded-3xl p-2 cursor-pointer;
       }
 
       & .ig-container {
-        @apply bg-rose-100 rounded-3xl p-2;
+        @apply bg-rose-100 rounded-3xl p-2 cursor-pointer;
       }
     }
   }
@@ -205,8 +206,8 @@
 }
 
 @utility fancy-text {
-  -webkit-text-stroke: 5px rgba(11, 11, 62, 0.79);
-  font-size: 190px;
+  -webkit-text-stroke: 3px rgba(0, 11, 62, 0.9);
+  font-size: 165px;
   font-family: "Archivo", sans-serif;
 }
 
