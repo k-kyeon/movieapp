@@ -3,7 +3,6 @@ import Search from "./components/Search";
 import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
 import MovieCard from "./components/MovieCard";
-import { useDebounce } from "react-use";
 import { getTrendingMovies, updateSearchCount } from "./appwrite";
 import Footer from "./components/Footer";
 
@@ -23,14 +22,16 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
-  const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [defaultMovieList, setDefaultMovieList] = useState([]);
+
+  const [trendingMovies, setTrendingMovies] = useState([]);
+
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [genreMovies, setGenreMovies] = useState([]);
 
-  useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const fetchGenres = async () => {
     try {
@@ -101,10 +102,11 @@ const App = () => {
         return;
       }
 
-      setMovieList(data.results || []);
-
       if (query && data.results.length > 0) {
+        setMovieList(data.results || []);
         await updateSearchCount(query, data.results[0]);
+      } else {
+        setDefaultMovieList(data.results || []);
       }
     } catch (error) {
       console.error(`Error fetching movies: ${error}`);
@@ -125,13 +127,18 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
     fetchGenres();
     loadTrendingMovies();
+    fetchMovies();
   }, []);
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) return;
+
+    fetchMovies(searchTerm.trim());
+    setSelectedGenre(null); // override genre
+    setHasSearched(true);
+  };
 
   return (
     <main>
@@ -144,12 +151,16 @@ const App = () => {
             Find <span className="text-gradient">Movies</span> You'll Love
             Within Seconds
           </h1>
-          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <Search
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            onSearch={handleSearch}
+          />
         </header>
 
         {genres.length > 0 && (
           <section className="genres">
-            <h2 className="mt-5">Genres</h2>
+            <h2>Genres</h2>
 
             <ul>
               {genres.map((g) => {
@@ -161,6 +172,8 @@ const App = () => {
                     onClick={() => {
                       setSelectedGenre(g);
                       fetchMoviesByGenre(g.id);
+                      setHasSearched(false);
+                      setSearchTerm("");
                     }}
                     className={`cursor-pointer transition rounded-2xl border ${
                       isSelected
@@ -192,23 +205,23 @@ const App = () => {
         )}
 
         <section className="all-movies">
-          <div className="flex justify-between">
+          <div className="heading-container">
             <h2>
               {selectedGenre ? `${selectedGenre.name} Movies` : "All Movies"}
             </h2>
 
             {selectedGenre && (
-              <div>
-                <button
-                  className="genre-reset-button"
-                  onClick={() => {
-                    setSelectedGenre(null);
-                    fetchMovies(); // Go back to default all movies
-                  }}
-                >
-                  Clear Genre Filter
-                </button>
-              </div>
+              <button
+                className="genre-reset-button"
+                onClick={() => {
+                  setSelectedGenre(null);
+                  setHasSearched(false);
+                  setSearchTerm("");
+                  fetchMovies(); // Go back to default all movies
+                }}
+              >
+                Clear Genre Filter
+              </button>
             )}
           </div>
 
@@ -218,9 +231,15 @@ const App = () => {
             <p className="text-red-500">{errorMessage}</p>
           ) : (
             <ul>
-              {(selectedGenre ? genreMovies : movieList).map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
+              {(hasSearched
+                ? movieList // search result
+                : selectedGenre
+                ? genreMovies // genre selected
+                : defaultMovieList
+              ) // fallback default
+                .map((movie) => (
+                  <MovieCard key={movie.id} movie={movie} />
+                ))}
             </ul>
           )}
         </section>

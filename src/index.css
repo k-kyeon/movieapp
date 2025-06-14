@@ -53,14 +53,14 @@
   }
 
   .search {
-    @apply w-full bg-light-100/9 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/14 px-4 py-3 rounded-xl mt-10 max-w-3xl mx-auto;
 
     & div {
       @apply relative flex items-center;
     }
 
     & img {
-      @apply absolute left-2 h-5 w-5;
+      @apply absolute right-5 h-5 w-5 cursor-pointer;
     }
 
     & input {
@@ -73,7 +73,7 @@
   }
 
   .genres {
-    @apply mt-10;
+    @apply mt-12;
 
     & ul {
       @apply w-full flex flex-row gap-5 mt-5 hide-scrollbar overflow-x-auto;
@@ -109,7 +109,7 @@
   }
 
   .all-movies {
-    @apply space-y-9;
+    @apply space-y-9 mt-12;
 
     & ul {
       @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
@@ -117,6 +117,10 @@
 
     .genre-reset-button {
       @apply mb-4 px-4 py-2 cursor-pointer bg-red-400 text-white rounded-md;
+    }
+
+    .heading-container {
+      @apply flex justify-between mb-2.5;
     }
   }
 
