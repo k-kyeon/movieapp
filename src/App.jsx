@@ -26,8 +26,33 @@ const App = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [genres, setGenres] = useState("");
+  // const genres = ["Action", "Horror", "Romance", "Thriller"];
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
+
+  const fetchGenres = async () => {
+    try {
+      const endpoint = `${API_URL}/genre/movie/list?language=en`;
+      const response = await fetch(endpoint, API_OPTIONS);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch genres");
+      }
+
+      const data = await response.json();
+
+      if (data.Response === "False") {
+        setErrorMessage(data.Error || "Failed to fetch genres");
+        setGenres([]);
+        return;
+      }
+
+      setGenres(data.genres || []);
+    } catch (error) {
+      console.error(`Error fetching genres: ${error}`);
+    }
+  };
 
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
@@ -80,6 +105,7 @@ const App = () => {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
+    fetchGenres();
     loadTrendingMovies();
   }, []);
 
@@ -96,6 +122,20 @@ const App = () => {
           </h1>
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
+
+        {genres.length > 0 && (
+          <section className="genres">
+            <h2 className="mt-5">Genres</h2>
+
+            <ul>
+              {genres.map((g) => (
+                <li key={g.id}>
+                  <p>{g.name}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {trendingMovies.length > 0 && (
           <section className="trending">
