@@ -26,8 +26,9 @@ const App = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [genres, setGenres] = useState("");
-  // const genres = ["Action", "Horror", "Romance", "Thriller"];
+  const [genres, setGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [genreMovies, setGenreMovies] = useState([]);
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
 
@@ -51,6 +52,29 @@ const App = () => {
       setGenres(data.genres || []);
     } catch (error) {
       console.error(`Error fetching genres: ${error}`);
+    }
+  };
+
+  const fetchMoviesByGenre = async (genre_id) => {
+    try {
+      const endpoint = `${API_URL}/discover/movie?with_genres=${genre_id}&sort_by=popularity.desc`;
+      const response = await fetch(endpoint, API_OPTIONS);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch movies by genre");
+      }
+
+      const data = await response.json();
+
+      if (data.Response === "False") {
+        setErrorMessage(data.Error || "Failed to fetch movies by genre");
+        setGenreMovies([]);
+        return;
+      }
+
+      setGenreMovies(data.results || []);
+    } catch (error) {
+      console.error(`Error fetching movies by genre: ${error}`);
     }
   };
 
@@ -128,11 +152,26 @@ const App = () => {
             <h2 className="mt-5">Genres</h2>
 
             <ul>
-              {genres.map((g) => (
-                <li key={g.id}>
-                  <p>{g.name}</p>
-                </li>
-              ))}
+              {genres.map((g) => {
+                const isSelected = selectedGenre?.id === g.id;
+
+                return (
+                  <li
+                    key={g.id}
+                    onClick={() => {
+                      setSelectedGenre(g);
+                      fetchMoviesByGenre(g.id);
+                    }}
+                    className={`cursor-pointer transition rounded-2xl border ${
+                      isSelected
+                        ? "bg-blue-950 text-black border-blue-700"
+                        : "hover:bg-light-200 border-blue-950 text-white"
+                    }`}
+                  >
+                    <p>{g.name}</p>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         )}
@@ -153,7 +192,25 @@ const App = () => {
         )}
 
         <section className="all-movies">
-          <h2>All Movies</h2>
+          <div className="flex justify-between">
+            <h2>
+              {selectedGenre ? `${selectedGenre.name} Movies` : "All Movies"}
+            </h2>
+
+            {selectedGenre && (
+              <div>
+                <button
+                  className="genre-reset-button"
+                  onClick={() => {
+                    setSelectedGenre(null);
+                    fetchMovies(); // Go back to default all movies
+                  }}
+                >
+                  Clear Genre Filter
+                </button>
+              </div>
+            )}
+          </div>
 
           {isLoading ? (
             <FadeLoader color="#ffffff" />
@@ -161,7 +218,7 @@ const App = () => {
             <p className="text-red-500">{errorMessage}</p>
           ) : (
             <ul>
-              {movieList.map((movie) => (
+              {(selectedGenre ? genreMovies : movieList).map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
             </ul>
