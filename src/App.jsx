@@ -33,6 +33,8 @@ const App = () => {
 
   const [hasSearched, setHasSearched] = useState(false);
 
+  const [upcomingMovies, setUpcomingMovies] = useState([]);
+
   const fetchGenres = async () => {
     try {
       const endpoint = `${API_URL}/genre/movie/list?language=en`;
@@ -76,6 +78,27 @@ const App = () => {
       setGenreMovies(data.results || []);
     } catch (error) {
       console.error(`Error fetching movies by genre: ${error}`);
+    }
+  };
+
+  const fetchUpcomingMovies = async () => {
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+    const future = thirtyDaysFromNow.toISOString().split("T")[0];
+
+    try {
+      const endpoint = `${API_URL}/discover/movie?language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte=${today}&release_date.lte=${future}'`;
+      const response = await fetch(endpoint, API_OPTIONS);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch upcoming movies");
+      }
+
+      const data = await response.json();
+      setUpcomingMovies(data.results || []);
+    } catch (error) {
+      console.error(`Error fetching upcoming movies: ${error}`);
     }
   };
 
@@ -130,6 +153,7 @@ const App = () => {
     fetchGenres();
     loadTrendingMovies();
     fetchMovies();
+    fetchUpcomingMovies();
   }, []);
 
   const handleSearch = () => {
@@ -198,6 +222,24 @@ const App = () => {
                 <li key={movie.$id}>
                   <p>{index + 1}</p>
                   <img src={movie.poster_url} alt={movie.title} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {upcomingMovies.length > 0 && (
+          <section className="upcoming">
+            <h2>Upcoming Movies</h2>
+
+            <ul>
+              {upcomingMovies.map((movie) => (
+                <li key={movie.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <p>{movie.release_date}</p>
                 </li>
               ))}
             </ul>

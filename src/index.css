@@ -88,6 +88,26 @@
     }
   }
 
+  .upcoming {
+    @apply mt-10;
+
+    & ul {
+      @apply flex flex-row overflow-y-auto gap-5 mt-5 w-full hide-scrollbar;
+    }
+
+    & ul li {
+      @apply min-w-[230px] flex flex-col items-center mt-4;
+    }
+
+    & ul li p {
+      @apply mt-[22px] text-nowrap text-white;
+    }
+
+    & ul li img {
+      @apply w-[150px] h-[163px] rounded-lg object-cover -ml-4 shadow-md shadow-gray-400;
+    }
+  }
+
   .trending {
     @apply mt-20;
 
