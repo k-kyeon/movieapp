@@ -96,15 +96,19 @@
     }
 
     & ul li {
-      @apply min-w-[230px] flex flex-col items-center mt-4;
+      @apply min-w-[220px] border border-blue-950 rounded-xl py-3 flex flex-col justify-center items-center mt-2 gap-y-2.5;
     }
 
     & ul li p {
-      @apply mt-[22px] text-nowrap text-white;
+      @apply text-nowrap text-white;
+    }
+
+    & ul li p:first-of-type {
+      @apply text-ellipsis truncate  max-w-[170px];
     }
 
     & ul li img {
-      @apply w-[150px] h-[163px] rounded-lg object-cover -ml-4 shadow-md shadow-gray-400;
+      @apply w-[150px] h-[210px] rounded-lg object-cover shadow-sm shadow-gray-400;
     }
   }
 

@@ -88,7 +88,7 @@ const App = () => {
     const future = thirtyDaysFromNow.toISOString().split("T")[0];
 
     try {
-      const endpoint = `${API_URL}/discover/movie?language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte=${today}&release_date.lte=${future}'`;
+      const endpoint = `${API_URL}/discover/movie?language=en-US&page=1&sort_by=primary_release_date.asc&with_release_type=2|3&primary_release_date.gte=${today}&primary_release_date.lte=${future}`;
       const response = await fetch(endpoint, API_OPTIONS);
 
       if (!response.ok) {
@@ -235,10 +235,15 @@ const App = () => {
             <ul>
               {upcomingMovies.map((movie) => (
                 <li key={movie.id}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    alt={movie.title}
-                  />
+                  <p>{movie.title}</p>
+                  {movie.poster_path ? (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                  ) : (
+                    <img src="no-poster.png" />
+                  )}
                   <p>{movie.release_date}</p>
                 </li>
               ))}
