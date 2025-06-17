@@ -34,7 +34,10 @@ const App = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
+  const [youtubeKey, setYoutubeKey] = useState(null);
   const fetchGenres = async () => {
     try {
       const endpoint = `${API_URL}/genre/movie/list?language=en`;
@@ -102,6 +105,26 @@ const App = () => {
     }
   };
 
+  const fetchMovieTrailer = async (movieId) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/movie/${movieId}/videos`,
+        API_OPTIONS
+      );
+      const data = await response.json();
+
+      // Find YouTube trailer (can also check for type === "Teaser")
+      const trailer = data.results.find(
+        (video) => video.site === "YouTube" && video.type === "Trailer"
+      );
+
+      return trailer?.key || null; // YouTube video key
+    } catch (err) {
+      console.error("Failed to fetch trailer:", err);
+      return null;
+    }
+  };
+
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage("");
@@ -155,6 +178,14 @@ const App = () => {
     fetchMovies();
     fetchUpcomingMovies();
   }, []);
+
+  useEffect(() => {
+    if (showModal && selectedMovie) {
+      fetchMovieTrailer(selectedMovie.id).then((key) => {
+        setYoutubeKey(key); // state: const [youtubeKey, setYoutubeKey] = useState(null);
+      });
+    }
+  }, [showModal, selectedMovie]);
 
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
@@ -234,7 +265,14 @@ const App = () => {
 
             <ul>
               {upcomingMovies.map((movie) => (
-                <li key={movie.id}>
+                <li
+                  key={movie.id}
+                  onClick={() => {
+                    setSelectedMovie(movie);
+                    setShowModal(true);
+                  }}
+                  className="cursor-pointer"
+                >
                   <p>{movie.title}</p>
                   {movie.poster_path ? (
                     <img
@@ -249,6 +287,62 @@ const App = () => {
               ))}
             </ul>
           </section>
+        )}
+
+        {showModal && selectedMovie && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div
+              className="modal-content border shadow-2xl shadow-blue-800 border-amber-900"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col w-full">
+                <h2 className="text-black mb-2 font-extrabold">
+                  {selectedMovie.title}
+                </h2>
+                <div className="flex gap-x-5">
+                  {selectedMovie.poster_path && (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${selectedMovie.poster_path}`}
+                      alt={selectedMovie.title}
+                      className="rounded-lg shadow-sm shadow-blue-dark-100"
+                    />
+                  )}
+                  <div className="w-full min-w-[200px] border rounded-xl text-white bg-blue-dark-100 p-4">
+                    <div className="flex justify-between mb-2">
+                      <p>
+                        Release Date:{" "}
+                        <span className="text-yellow-500">
+                          {selectedMovie.release_date}
+                        </span>
+                      </p>
+                      <button
+                        onClick={() => setShowModal(false)}
+                        className="cursor-pointer text-red-300"
+                      >
+                        Close
+                      </button>
+                    </div>
+                    {youtubeKey ? (
+                      <iframe
+                        width="100%"
+                        height="300"
+                        src={`https://www.youtube.com/embed/${youtubeKey}`}
+                        title="Trailer"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="mb-3 rounded-2xl shadow-sm shadow-white"
+                      ></iframe>
+                    ) : (
+                      <p className="my-2">No trailer available.</p>
+                    )}
+                    <p>
+                      {selectedMovie.overview || "No description available."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         <section className="all-movies">

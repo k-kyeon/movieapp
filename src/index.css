@@ -96,7 +96,7 @@
     }
 
     & ul li {
-      @apply min-w-[220px] border border-blue-950 rounded-xl py-3 flex flex-col justify-center items-center mt-2 gap-y-2.5;
+      @apply min-w-[220px] border border-blue-950 bg-blue-dark-100 rounded-xl py-3 flex flex-col justify-center items-center mt-2 gap-y-2.5;
     }
 
     & ul li p {
@@ -109,6 +109,18 @@
 
     & ul li img {
       @apply w-[150px] h-[210px] rounded-lg object-cover shadow-sm shadow-gray-400;
+    }
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-black opacity-98 flex items-center justify-center z-50;
+  }
+
+  .modal-content {
+    @apply flex gap-x-6 bg-white text-black p-6 rounded-xl max-w-4xl w-full max-h-[80vh] overflow-y-auto;
+
+    & img {
+      @apply max-h-[50vh] self-center;
     }
   }
 
