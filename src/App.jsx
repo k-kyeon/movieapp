@@ -299,14 +299,9 @@ const App = () => {
 
         {showModal && selectedMovie && (
           <div className="modal-overlay" onClick={() => setShowModal(false)}>
-            <div
-              className="modal-content border shadow-2xl shadow-blue-800 border-amber-900"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="flex flex-col w-full">
-                <h2 className="text-black mb-2 font-extrabold">
-                  {selectedMovie.title}
-                </h2>
+                <h2>{selectedMovie.title}</h2>
                 <div className="flex gap-x-5">
                   {selectedMovie.poster_path && (
                     <img
