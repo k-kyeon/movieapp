@@ -187,6 +187,14 @@ const App = () => {
     }
   }, [showModal, selectedMovie]);
 
+  useEffect(() => {
+    if (selectedMovie) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selectedMovie]);
+
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
 

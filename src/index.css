@@ -113,7 +113,7 @@
   }
 
   .modal-overlay {
-    @apply fixed inset-0 bg-black opacity-98 flex items-center justify-center z-50;
+    @apply fixed inset-0 bg-black opacity-98 flex items-center justify-center z-9999;
   }
 
   .modal-content {
