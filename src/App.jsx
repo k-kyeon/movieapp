@@ -99,7 +99,11 @@ const App = () => {
       }
 
       const data = await response.json();
-      setUpcomingMovies(data.results || []);
+      const filtered = (data.results || []).filter(
+        (movie) => movie.poster_path
+      );
+
+      setUpcomingMovies(filtered);
     } catch (error) {
       console.error(`Error fetching upcoming movies: ${error}`);
     }
