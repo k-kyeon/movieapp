@@ -79,13 +79,17 @@
       @apply w-full flex flex-row gap-5 mt-5 hide-scrollbar overflow-x-auto;
     }
 
-    & ul li {
-      @apply flex border-light-100 border bg-blue-dark-100 hover:bg-blue-950 cursor-pointer rounded-2xl justify-center items-center min-w-fit max-w-xs;
-    }
-
     & ul li p {
-      @apply py-3 px-4.5 text-white leading-tight;
+      @apply py-3 px-4.5 leading-tight;
     }
+  }
+
+  .genre-button {
+    @apply flex justify-center items-center min-w-fit max-w-xs cursor-pointer transition rounded-2xl border bg-blue-dark-100 border-slate-700 text-white hover:bg-light-200;
+  }
+
+  .genre-button-selected {
+    @apply bg-blue-200 text-black border-slate-700;
   }
 
   .upcoming {

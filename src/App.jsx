@@ -255,10 +255,8 @@ const App = () => {
                         });
                       });
                     }}
-                    className={`cursor-pointer transition rounded-2xl border ${
-                      isSelected
-                        ? "bg-blue-950 text-black border-blue-700"
-                        : "hover:bg-light-200 border-slate-700 text-white"
+                    className={`genre-button ${
+                      isSelected ? "genre-button-selected" : ""
                     }`}
                   >
                     <p>{g.name}</p>
