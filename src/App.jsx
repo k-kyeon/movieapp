@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Search from "./components/Search";
 import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
@@ -38,6 +38,9 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [youtubeKey, setYoutubeKey] = useState(null);
+
+  const genreSectionRef = useRef(null);
+
   const fetchGenres = async () => {
     try {
       const endpoint = `${API_URL}/genre/movie/list?language=en`;
@@ -245,11 +248,17 @@ const App = () => {
                       fetchMoviesByGenre(g.id);
                       setHasSearched(false);
                       setSearchTerm("");
+
+                      setTimeout(() => {
+                        genreSectionRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      });
                     }}
                     className={`cursor-pointer transition rounded-2xl border ${
                       isSelected
                         ? "bg-blue-950 text-black border-blue-700"
-                        : "hover:bg-light-200 border-blue-950 text-white"
+                        : "hover:bg-light-200 border-slate-700 text-white"
                     }`}
                   >
                     <p>{g.name}</p>
@@ -356,7 +365,7 @@ const App = () => {
           </div>
         )}
 
-        <section className="all-movies">
+        <section className="all-movies" ref={genreSectionRef}>
           <div className="heading-container">
             <h2>
               {selectedGenre ? `${selectedGenre.name} Movies` : "All Movies"}
@@ -370,6 +379,7 @@ const App = () => {
                   setHasSearched(false);
                   setSearchTerm("");
                   fetchMovies(); // Go back to default all movies
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
                 Clear Genre Filter

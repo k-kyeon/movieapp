@@ -80,7 +80,7 @@
     }
 
     & ul li {
-      @apply flex border-light-200 border bg-blue-dark-100 hover:bg-blue-950 cursor-pointer rounded-2xl justify-center items-center min-w-fit max-w-xs;
+      @apply flex border-light-100 border bg-blue-dark-100 hover:bg-blue-950 cursor-pointer rounded-2xl justify-center items-center min-w-fit max-w-xs;
     }
 
     & ul li p {
@@ -96,7 +96,7 @@
     }
 
     & ul li {
-      @apply min-w-[220px] border border-blue-950 bg-blue-dark-100 rounded-xl py-3 flex flex-col justify-center items-center mt-2 gap-y-2.5;
+      @apply min-w-[220px] border border-slate-800 bg-blue-dark-100 rounded-xl py-3 flex flex-col justify-center items-center mt-2 gap-y-2.5;
     }
 
     & ul li p {
