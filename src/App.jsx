@@ -192,12 +192,16 @@ const App = () => {
   }, [showModal, selectedMovie]);
 
   useEffect(() => {
-    if (selectedMovie) {
+    if (showModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [selectedMovie]);
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
 
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
