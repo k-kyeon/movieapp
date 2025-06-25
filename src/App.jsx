@@ -273,7 +273,14 @@ const App = () => {
 
             <ul>
               {trendingMovies.map((movie, index) => (
-                <li key={movie.$id}>
+                <li
+                  key={movie.$id}
+                  className="cursor-pointer"
+                  onClick={(movie) => {
+                    setSelectedMovie(movie);
+                    setShowModal(true);
+                  }}
+                >
                   <p>{index + 1}</p>
                   <img src={movie.poster_url} alt={movie.title} />
                 </li>
@@ -398,7 +405,14 @@ const App = () => {
                 : defaultMovieList
               ) // fallback default
                 .map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    onClick={(movie) => {
+                      setSelectedMovie(movie);
+                      setShowModal(true);
+                    }}
+                  />
                 ))}
             </ul>
           )}
