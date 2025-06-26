@@ -27,6 +27,9 @@ export const updateSearchCount = async (searchTerm, movie) => {
         count: 1,
         movie_id: movie.id,
         poster_url: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+        description: movie.overview,
+        title: movie.title,
+        release_date: movie.release_date,
       });
     }
   } catch (error) {

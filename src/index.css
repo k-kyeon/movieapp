@@ -121,7 +121,7 @@
   }
 
   .modal-content {
-    @apply flex flex-col sm:flex-row gap-6 bg-white text-black p-6 rounded-xl max-w-4xl w-full max-h-[80vh] overflow-y-auto border shadow-2xl shadow-blue-800;
+    @apply flex flex-col sm:flex-row gap-6 bg-blue-dark-100 text-black p-6 rounded-xl max-w-4xl w-full max-h-[80vh] overflow-y-auto border shadow-2xl shadow-blue-800;
 
     & img {
       @apply max-h-[300px] w-auto self-center sm:max-h-[50vh];

@@ -276,8 +276,15 @@ const App = () => {
                 <li
                   key={movie.$id}
                   className="cursor-pointer"
-                  onClick={(movie) => {
-                    setSelectedMovie(movie);
+                  onClick={() => {
+                    setSelectedMovie({
+                      id: movie.movie_id,
+                      title: movie.title,
+                      overview:
+                        movie.description || "No description available.",
+                      release_date: movie.release_date || "Unknown",
+                      poster_path: movie.poster_url?.split("/").pop() || "", // fake a poster_path
+                    });
                     setShowModal(true);
                   }}
                 >
@@ -323,7 +330,7 @@ const App = () => {
           <div className="modal-overlay" onClick={() => setShowModal(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="flex flex-col w-full">
-                <h2>{selectedMovie.title}</h2>
+                <h2 className="text-white">{selectedMovie.title}</h2>
                 <div className="flex gap-x-5">
                   {selectedMovie.poster_path && (
                     <img
@@ -332,8 +339,8 @@ const App = () => {
                       className="rounded-lg shadow-sm shadow-blue-dark-100"
                     />
                   )}
-                  <div className="w-full min-w-[200px] border rounded-xl text-white bg-blue-dark-100 p-4">
-                    <div className="flex justify-between mb-2">
+                  <div className="w-full min-w-[200px] rounded-xl text-white bg-[#1c1f33] p-4">
+                    <div className="flex justify-between items-center mb-2">
                       <p>
                         Release Date:{" "}
                         <span className="text-yellow-500">
