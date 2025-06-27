@@ -221,8 +221,8 @@ const App = () => {
       <div className="wrapper">
         <header>
           <img src="./hero.png" alt="Hero Banner" />
-          <h1>
-            Find <span className="text-gradient">Movies</span> You'll Love
+          <h1 className="text-light-100">
+            Find Movies You'll Love <br />
             Within Seconds
           </h1>
           <Search
