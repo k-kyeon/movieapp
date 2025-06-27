@@ -53,18 +53,18 @@
   }
 
   .search {
-    @apply w-full bg-light-100/14 px-4 py-3 rounded-xl mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/18 px-5 py-3 rounded-4xl mt-10 max-w-3xl mx-auto;
 
     & div {
       @apply relative flex items-center;
     }
 
     & img {
-      @apply absolute right-5 h-5 w-5 cursor-pointer;
+      @apply h-5 w-5 cursor-pointer sm:pr-1;
     }
 
     & input {
-      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-100 placeholder-indigo-100 outline-hidden;
+      @apply w-full bg-transparent py-2 sm:pr-10 px-2 text-base text-gray-100 placeholder-indigo-100 outline-hidden truncate;
     }
   }
 
